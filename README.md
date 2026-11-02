@@ -1,56 +1,52 @@
-# sv
+# Kanban Board (PWA)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Ein einfaches Kanban-Board mit SvelteKit (Svelte 5), Tailwind CSS und date-fns. Installierbar als PWA und komplett offline nutzbar.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- 4 Lanes: **Do, Doing, Done, Archiv**
+- Issues per `<dialog>` anlegen (Title, Description, Creation-Date, Due-Date, Story Points, Priority)
+- Drag & Drop ohne Library (HTML5 Drag and Drop API)
+- Speicherung aller Issues und ihrer Lane in `localStorage`
+- Export einzelner Issues als **ICS**, Teilen per **Web Share API** (Fallback: Zwischenablage)
+- Export aller Issues als **CSV**
+- Datum/Zeit mit **date-fns** (z. B. „in 2 Tagen“)
+- Summe der **Story Points** pro Lane
+- Visuelle Warnung „Überfällig“, wenn das Due-Date vorbei ist
+- **Notification**, wenn ein Issue nach *Done* gezogen wird
+- **PWA**: Manifest + eigener Service Worker, alle Dateien werden vorab gecacht
 
-```sh
-# create a new project
-npx sv create my-app
+## Projektstruktur
+
+```
+src/
+  app.html                Grundgerüst (Manifest, Theme-Color)
+  service-worker.js       Offline-Cache
+  routes/
+    +layout.js            statisch, ohne Server-Rendering
+    +layout.svelte        lädt die Styles
+    +page.svelte          Seite: Header, 4 Lanes, Dialog
+    layout.css            Tailwind + eigene Farben
+  lib/
+    store.svelte.js       Zustand + localStorage + Notification
+    export.js             ICS, CSV, Web Share
+    Lane.svelte           Eine Spalte (Drop-Ziel, Punktesumme)
+    IssueCard.svelte      Eine Karte (Drag-Quelle, Warnung, Aktionen)
+    IssueDialog.svelte    Dialog zum Anlegen
+static/                   manifest.webmanifest, Icons
 ```
 
-To recreate this project with the same configuration:
+## Starten
 
-```sh
-# recreate this project
-npx sv@1.2.0 create --template minimal --no-types --add prettier eslint tailwindcss="plugins:typography,forms" --install npm .
+```bash
+npm install
+npm run dev       # Entwicklung
+npm run build     # Produktions-Build nach build/
+npm run preview   # Build lokal testen (PWA/Offline testen)
 ```
 
-## Adding features
+## Hinweise
 
-Add features to your project with `sv add`:
-
-```sh
-npx sv add
-```
-
-For example, to add Tailwind CSS:
-
-```sh
-npx sv add tailwindcss
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- Notifications brauchen die Erlaubnis des Browsers (wird beim ersten Mal nach *Done* abgefragt).
+- Drag & Drop funktioniert mit der Maus; auf Touch-Geräten nur eingeschränkt (Browser-Eigenschaft der HTML5-API).
+- Offline-Test: `npm run build && npm run preview`, Seite einmal laden, dann im Browser „Offline“ stellen.
