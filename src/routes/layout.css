@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+
+/* Eigene Farben: warmes Papier, tiefes Grün, Terrakotta als Akzent */
+@theme {
+	--color-paper: #f4efe6;
+	--color-card: #fbf8f2;
+	--color-ink: #2f3e46;
+	--color-moss: #52796f;
+	--color-clay: #c46a4a;
+	--color-line: #ddd5c6;
+	--font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+}
+
+body {
+	background: var(--color-paper);
+	color: var(--color-ink);
+	font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Dialog-Hintergrund abdunkeln */
+dialog::backdrop {
+	background: rgb(47 62 70 / 0.45);
+}
